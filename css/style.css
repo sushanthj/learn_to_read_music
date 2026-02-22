@@ -66,6 +66,38 @@ header p {
   margin-top: 4px;
 }
 
+/* Navigation tabs */
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.nav-tab {
+  padding: 6px 16px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 2px solid var(--border);
+  transition: all 0.15s ease;
+}
+
+.nav-tab:hover {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: white;
+}
+
+.nav-tab.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
 /* Main container */
 .container {
   width: 100%;
@@ -130,12 +162,12 @@ header p {
   background: var(--surface);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 16px;
+  padding: 20px 16px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 200px;
+  min-height: 220px;
 }
 
 #staff {
@@ -147,6 +179,8 @@ header p {
 #staff svg {
   max-width: 100%;
   height: auto;
+  transform: scale(1.75);
+  transform-origin: center center;
 }
 
 /* Feedback */
@@ -197,19 +231,21 @@ header p {
 }
 
 .note-btn {
-  width: 52px;
-  height: 52px;
+  min-width: 48px;
+  height: 48px;
+  padding: 8px 14px;
   border: 2px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
   color: var(--text);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.12s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .note-btn:hover {
@@ -608,22 +644,32 @@ header p {
 
 /* Dark mode VexFlow SVG adjustments */
 @media (prefers-color-scheme: dark) {
-  #staff svg text {
+  #staff svg text,
+  #composition-staff svg text,
+  #practice-staff svg text {
     fill: var(--text) !important;
   }
 
   #staff svg path,
-  #staff svg rect {
+  #staff svg rect,
+  #composition-staff svg path,
+  #composition-staff svg rect,
+  #practice-staff svg path,
+  #practice-staff svg rect {
     fill: var(--text) !important;
     stroke: var(--text) !important;
   }
 
-  #staff svg line {
+  #staff svg line,
+  #composition-staff svg line,
+  #practice-staff svg line {
     stroke: var(--text) !important;
   }
 
   /* Staff lines should be subtler */
-  #staff svg .vf-stave line {
+  #staff svg .vf-stave line,
+  #composition-staff svg .vf-stave line,
+  #practice-staff svg .vf-stave line {
     stroke: var(--text-secondary) !important;
   }
 }
@@ -635,9 +681,10 @@ header p {
   }
 
   .note-btn {
-    width: 44px;
-    height: 44px;
-    font-size: 1rem;
+    min-width: 40px;
+    height: 42px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
   }
 
   .stats {

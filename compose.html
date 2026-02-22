@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Compose your own sheet music">
+  <meta name="theme-color" content="#4361ee" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)">
+  <title>Music Composer</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/compose.css">
+  <script src="https://cdn.jsdelivr.net/npm/vexflow@5.0.0/build/cjs/vexflow.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Music Composer</h1>
+    <p>Create your own sheet music</p>
+    <nav class="nav-tabs">
+      <a href="index.html" class="nav-tab">Quiz</a>
+      <a href="compose.html" class="nav-tab active">Compose</a>
+      <a href="practice.html" class="nav-tab">Practice</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="controls">
+        <button class="clef-btn active" data-clef="treble">Treble</button>
+        <button class="clef-btn" data-clef="bass">Bass</button>
+        <button class="clef-btn" data-clef="grand">Grand</button>
+      </div>
+
+      <div class="controls">
+        <label class="time-signature-label">
+          Time Signature
+          <select id="time-signature" class="time-signature-select">
+            <option value="4/4" selected>4/4</option>
+            <option value="3/4">3/4</option>
+            <option value="2/4">2/4</option>
+            <option value="6/8">6/8</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="controls">
+        <button class="tool-btn" id="play-btn" title="Play composition">▶️</button>
+        <button class="tool-btn" id="clear-btn" title="Clear all">🗑️</button>
+        <button class="tool-btn" id="download-btn" title="Download as JSON">💾</button>
+      </div>
+    </div>
+
+    <!-- Note palette -->
+    <div class="palette-section">
+      <h3>Note Duration</h3>
+      <div class="note-duration-btns">
+        <button class="duration-btn active" data-duration="w" title="Whole note">𝅝</button>
+        <button class="duration-btn" data-duration="h" title="Half note">𝅗𝅥</button>
+        <button class="duration-btn" data-duration="q" title="Quarter note">𝅘𝅥</button>
+        <button class="duration-btn" data-duration="8" title="Eighth note">𝅘𝅥𝅮</button>
+        <button class="duration-btn" data-duration="16" title="Sixteenth note">𝅘𝅥𝅯</button>
+      </div>
+
+      <h3>Accidentals</h3>
+      <div class="accidental-btns">
+        <button class="accidental-btn active" data-accidental="">♮ Natural</button>
+        <button class="accidental-btn" data-accidental="#">♯ Sharp</button>
+        <button class="accidental-btn" data-accidental="b">♭ Flat</button>
+      </div>
+
+      <h3>Tools</h3>
+      <div class="tool-btns">
+        <button class="mode-btn" data-mode="rest">𝄽 Add Rest</button>
+      </div>
+    </div>
+
+    <!-- Staff display -->
+    <div class="composition-area">
+      <div id="composition-staff"></div>
+      <div class="measure-controls">
+        <button class="measure-btn" id="add-measure-btn">+ Add Measure</button>
+        <button class="measure-btn" id="remove-measure-btn">- Remove Measure</button>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions">
+      <p><strong>How to use:</strong></p>
+      <p>1. Select note duration and accidental (if needed)</p>
+      <p>2. <strong>Left click</strong> on the staff to add notes, <strong>right click</strong> to delete</p>
+      <p>3. On touch devices: <strong>tap</strong> to add, <strong>double tap</strong> to delete</p>
+      <p>4. <strong>Drag</strong> notes up/down to change their pitch</p>
+      <p>5. Your composition auto-saves and will be available in Practice mode</p>
+    </div>
+  </main>
+
+  <script type="module" src="js/compose.js"></script>
+</body>
+</html>

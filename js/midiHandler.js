@@ -77,3 +77,6 @@ export class MIDIHandler {
     }
   }
 }
+
+// Alias for backwards compatibility
+export { MIDIHandler as MidiHandler };

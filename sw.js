@@ -1,15 +1,22 @@
-const CACHE_NAME = 'sight-reading-v1';
+const CACHE_NAME = 'sight-reading-v5';
 const ASSETS = [
   './',
   './index.html',
+  './compose.html',
+  './practice.html',
   './css/style.css',
+  './css/compose.css',
+  './css/practice.css',
   './js/app.js',
   './js/config.js',
+  './js/compose.js',
+  './js/practice.js',
   './js/noteGenerator.js',
   './js/quizManager.js',
   './js/uiController.js',
   './js/staffRenderer.js',
   './js/midiHandler.js',
+  './js/micHandler.js',
   './js/progressManager.js',
   './icons/icon-192.png',
   './icons/icon-512.png',

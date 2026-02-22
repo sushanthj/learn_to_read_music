@@ -1,5 +1,5 @@
 import { getRandomNote, resetGenerator } from './noteGenerator.js';
-import { resolveNotePool, LEVELS, ADVANCEMENT, FEEDBACK_DELAYS } from './config.js';
+import { resolveNotePool, LEVELS, ADVANCEMENT, FEEDBACK_DELAYS, LEVELS_LOCKED } from './config.js';
 
 export class QuizManager {
   constructor({ clefMode, onNewNote, onFeedback, onScoreUpdate, inputMode, progressManager, onLevelUp, onProgressUpdate }) {
@@ -54,6 +54,12 @@ export class QuizManager {
     const weights = this.computeWeights();
     this.currentNote = getRandomNote(this.notePool, weights);
     if (this.currentNote) {
+      // Random duration for visual variety (except chords)
+      if (this.currentNote.type !== 'chord') {
+        const durations = ['w', 'h', 'q', '8'];
+        this.currentNote.duration = durations[Math.floor(Math.random() * durations.length)];
+      }
+      this.currentNote.options = this.generateOptions();
       this.onNewNote(this.currentNote);
     }
   }
@@ -65,11 +71,17 @@ export class QuizManager {
     this.total++;
 
     let correct;
-    if (this.inputMode === 'midi' || this.inputMode === 'mic') {
+    if (this.currentNote.type === 'chord') {
+      correct = answer.toUpperCase() === this.currentNote.name.toUpperCase();
+    } else if (this.inputMode === 'midi' || this.inputMode === 'mic') {
       correct = answer === this.currentNote.midi;
+    } else if (/\d/.test(answer)) {
+      // Button click with octave — exact match
+      correct = answer.toUpperCase() === this.currentNote.name.toUpperCase();
     } else {
-      const noteLetter = this.currentNote.name.charAt(0).toUpperCase();
-      correct = answer.toUpperCase() === noteLetter;
+      // Keyboard shortcut (letter only) — match note name without octave
+      const expected = this.currentNote.name.replace(/\d+$/, '').toUpperCase();
+      correct = answer.toUpperCase() === expected;
     }
 
     // Track per-note stats
@@ -143,6 +155,65 @@ export class QuizManager {
     return weights;
   }
 
+  generateOptions() {
+    const isChord = this.currentNote.type === 'chord';
+
+    if (isChord) {
+      const allChords = ['C Major', 'C Minor', 'D Major', 'D Minor', 'Eb Major',
+                         'E Major', 'E Minor', 'F Major', 'F Minor',
+                         'G Major', 'G Minor', 'Ab Major', 'A Major', 'A Minor',
+                         'Bb Major', 'B Minor', 'B Dim'];
+      const correctName = this.currentNote.name;
+      const options = [correctName];
+      const others = allChords.filter(c => c !== correctName);
+      while (options.length < 6 && others.length > 0) {
+        const idx = Math.floor(Math.random() * others.length);
+        options.push(others.splice(idx, 1)[0]);
+      }
+      return this._shuffle(options);
+    }
+
+    const correctName = this.currentNote.name; // e.g. "C#4"
+    const options = [correctName];
+
+    // Distractors from the current note pool (only single notes, not chords)
+    const poolNames = [...new Set(this.notePool.filter(n => n.type !== 'chord').map(n => n.name))];
+    const others = poolNames.filter(n => n !== correctName);
+
+    while (options.length < 7 && others.length > 0) {
+      const idx = Math.floor(Math.random() * others.length);
+      options.push(others.splice(idx, 1)[0]);
+    }
+
+    // If still need more, add notes from nearby octaves
+    if (options.length < 7) {
+      const letters = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+      const correctOct = parseInt(correctName.replace(/\D/g, ''));
+      const nearby = [];
+      for (let oct = correctOct - 1; oct <= correctOct + 1; oct++) {
+        for (const l of letters) {
+          const name = l + oct;
+          if (!options.includes(name)) nearby.push(name);
+        }
+      }
+      while (options.length < 7 && nearby.length > 0) {
+        const idx = Math.floor(Math.random() * nearby.length);
+        options.push(nearby.splice(idx, 1)[0]);
+      }
+    }
+
+    return this._shuffle(options);
+  }
+
+  _shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
   checkAdvancement() {
     const levels = LEVELS[this.clefMode];
     if (!levels) return false;
@@ -186,8 +257,10 @@ export class QuizManager {
     const levels = LEVELS[this.clefMode];
     if (!levels || idx < 0 || idx >= levels.length) return;
 
-    const unlocked = this.progressManager ? this.progressManager.getUnlockedLevel(this.clefMode) : 0;
-    if (idx > unlocked) return; // can't select locked levels
+    if (LEVELS_LOCKED) {
+      const unlocked = this.progressManager ? this.progressManager.getUnlockedLevel(this.clefMode) : 0;
+      if (idx > unlocked) return; // can't select locked levels
+    }
 
     this.currentLevel = idx;
     this.recentAnswers = [];
@@ -230,7 +303,9 @@ export class QuizManager {
   getProgressInfo() {
     const levels = LEVELS[this.clefMode] || [];
     const level = levels[this.currentLevel] || {};
-    const unlocked = this.progressManager ? this.progressManager.getUnlockedLevel(this.clefMode) : 0;
+    const unlocked = LEVELS_LOCKED
+      ? (this.progressManager ? this.progressManager.getUnlockedLevel(this.clefMode) : 0)
+      : levels.length - 1;
     const isMaxLevel = this.currentLevel >= levels.length - 1;
 
     const window = this.recentAnswers.slice(-ADVANCEMENT.minNotes);
@@ -245,6 +320,7 @@ export class QuizManager {
       levelDescription: level.description || '',
       unlockedLevel: unlocked,
       isMaxLevel,
+      hasChords: !!(level.chords),
       recentCount,
       recentAccuracy,
       minNotes: ADVANCEMENT.minNotes,

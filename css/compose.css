@@ -1,0 +1,212 @@
+/* Composition-specific styles */
+/* Navigation tabs are defined in style.css */
+
+/* Toolbar */
+.toolbar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.time-signature-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.time-signature-select {
+  padding: 6px 12px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tool-btn {
+  padding: 8px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tool-btn:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.tool-btn:active {
+  transform: translateY(0);
+}
+
+/* Palette section */
+.palette-section {
+  width: 100%;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.palette-section h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  margin-top: 12px;
+}
+
+.palette-section h3:first-child {
+  margin-top: 0;
+}
+
+.note-duration-btns,
+.accidental-btns,
+.tool-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.duration-btn,
+.accidental-btn,
+.mode-btn {
+  padding: 10px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-width: 60px;
+}
+
+.accidental-btn,
+.mode-btn {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.duration-btn:hover,
+.accidental-btn:hover,
+.mode-btn:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.duration-btn.active,
+.accidental-btn.active,
+.mode-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* Composition area */
+.composition-area {
+  width: 100%;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  min-height: 300px;
+}
+
+#composition-staff {
+  width: 100%;
+  min-height: 200px;
+  margin-bottom: 16px;
+  cursor: crosshair;
+  display: flex;
+  justify-content: center;
+}
+
+#composition-staff svg {
+  display: block;
+  margin: 0 auto;
+}
+
+#composition-staff .vf-stavenote {
+  cursor: grab;
+}
+
+#composition-staff .vf-stavenote:active {
+  cursor: grabbing;
+}
+
+.measure-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.measure-btn {
+  padding: 8px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.measure-btn:hover {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: white;
+}
+
+.measure-btn:active {
+  transform: scale(0.98);
+}
+
+/* Instructions */
+.instructions {
+  width: 100%;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.instructions strong {
+  color: var(--text);
+}
+
+.instructions p {
+  margin: 2px 0;
+  padding-left: 0;
+}
+
+.instructions p:first-child {
+  margin-bottom: 6px;
+}
+
+/* Responsive adjustments */
+@media (min-width: 640px) {
+  .toolbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

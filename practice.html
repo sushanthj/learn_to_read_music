@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Practice your compositions">
+  <meta name="theme-color" content="#4361ee" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)">
+  <title>Practice Mode</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/compose.css">
+  <link rel="stylesheet" href="css/practice.css">
+  <script src="https://cdn.jsdelivr.net/npm/vexflow@5.0.0/build/cjs/vexflow.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Practice Mode</h1>
+    <p>Play along with your compositions</p>
+    <nav class="nav-tabs">
+      <a href="index.html" class="nav-tab">Quiz</a>
+      <a href="compose.html" class="nav-tab">Compose</a>
+      <a href="practice.html" class="nav-tab active">Practice</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Metronome Controls -->
+    <div class="toolbar">
+      <div class="controls">
+        <label class="file-upload-label">
+          <input type="file" id="load-composition" accept=".json" style="display:none">
+          <button class="tool-btn" id="load-btn" title="Load composition">📂</button>
+        </label>
+      </div>
+
+      <div class="metro-tempo">
+        <button class="tempo-adjust" id="tempo-down">−</button>
+        <div class="tempo-display-box">
+          <span class="tempo-value" id="tempo-display">60</span>
+          <span class="tempo-unit">BPM</span>
+        </div>
+        <button class="tempo-adjust" id="tempo-up">+</button>
+      </div>
+
+      <div class="controls">
+        <button class="tool-btn play-btn" id="play-practice-btn" title="Start">▶️</button>
+        <button class="tool-btn stop-btn" id="stop-practice-btn" title="Stop">⏹️</button>
+      </div>
+    </div>
+
+    <!-- BPM Slider -->
+    <div class="bpm-slider-row">
+      <span class="bpm-label">1</span>
+      <input type="range" id="bpm-slider" min="1" max="200" step="1" value="60" class="bpm-slider">
+      <span class="bpm-label">200</span>
+    </div>
+
+    <!-- Subdivision selector -->
+    <div class="metro-options">
+      <div class="metro-group">
+        <span class="metro-label">Subdivision</span>
+        <div class="metro-btns">
+          <button class="subdiv-btn active" data-subdiv="1" title="Quarter notes">𝅘𝅥</button>
+          <button class="subdiv-btn" data-subdiv="2" title="Eighth notes">𝅘𝅥𝅮𝅘𝅥𝅮</button>
+          <button class="subdiv-btn" data-subdiv="3" title="Triplets">𝅘𝅥𝅮³</button>
+          <button class="subdiv-btn" data-subdiv="4" title="Sixteenth notes">𝅘𝅥𝅯𝅘𝅥𝅯</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input section: MIDI / Mic / Hint toggles -->
+    <div class="input-section">
+      <label class="input-toggle">
+        <input type="checkbox" id="midi-toggle">
+        <span>MIDI</span>
+        <span class="input-status" id="midi-status"></span>
+      </label>
+      <label class="input-toggle">
+        <input type="checkbox" id="mic-toggle">
+        <span>Mic</span>
+        <span class="input-status" id="mic-status"></span>
+      </label>
+      <label class="input-toggle">
+        <input type="checkbox" id="hint-toggle">
+        <span>Hint</span>
+      </label>
+    </div>
+
+    <!-- Shared instrument toggle (visible when Hint or Mic is on) -->
+    <div class="instrument-toggle-section hidden" id="instrument-toggle-section">
+      <button class="instrument-btn active" data-mode="piano">🎹 Piano</button>
+      <button class="instrument-btn" data-mode="guitar">🎸 Guitar</button>
+    </div>
+
+    <!-- Mic controls (hidden until mic enabled) -->
+    <div class="mic-controls hidden" id="practice-mic-controls">
+      <div class="mic-meter">
+        <div class="mic-meter-fill" id="practice-mic-meter-fill"></div>
+        <div class="mic-meter-threshold" id="practice-mic-meter-threshold"></div>
+      </div>
+      <label class="mic-threshold-label">
+        Threshold
+        <input type="range" id="practice-mic-threshold" min="0.005" max="0.15" step="0.005" value="0.06">
+      </label>
+    </div>
+
+    <!-- Note buttons for click input (shown when Hint is on) -->
+    <div class="practice-note-buttons hidden" id="practice-note-buttons">
+      <!-- Dynamically populated with notes from current measure -->
+    </div>
+
+    <!-- Instrument hint (piano/guitar) — toggled by Hint checkbox -->
+    <div class="fingering-hint hidden" id="practice-hint">
+      <!-- Dynamically updated with piano keyboard or guitar tab -->
+    </div>
+
+    <!-- Measure indicator -->
+    <div class="measure-indicator" id="measure-indicator">
+      <span id="measure-label">No composition loaded</span>
+    </div>
+
+    <!-- Staff Container -->
+    <div class="staff-container" id="practice-staff"></div>
+  </main>
+
+  <script type="module" src="js/practice.js"></script>
+</body>
+</html>

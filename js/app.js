@@ -25,6 +25,9 @@ const quiz = new QuizManager({
     lastNote = note;
     renderNote(staffContainer, note, currentClef);
     ui.updateFingeringHint(note);
+    if (note.options) {
+      ui.setAnswerOptions(note.options);
+    }
   },
   onFeedback: (correct, noteName, delay) => {
     ui.showFeedback(correct, noteName, delay);
@@ -53,6 +56,7 @@ const ui = new UIController({
     quiz.setClefMode(clef);
     const info = quiz.getProgressInfo();
     ui.showLevelDropdown(currentClef, info.currentLevel, info.unlockedLevel);
+    ui.updateMicAvailability(info.hasChords);
   },
   onInputModeChange: (mode) => {
     inputMode = mode;
@@ -66,6 +70,7 @@ const ui = new UIController({
     quiz.setLevel(idx);
     const info = quiz.getProgressInfo();
     ui.showLevelDropdown(currentClef, info.currentLevel, info.unlockedLevel);
+    ui.updateMicAvailability(info.hasChords);
   },
   onInstrumentModeChange: (mode) => {
     instrumentMode = mode;
@@ -107,5 +112,6 @@ if (!MicHandler.isSupported()) {
 // Initialize level dropdown and start the quiz
 const initialInfo = quiz.getProgressInfo();
 ui.showLevelDropdown(currentClef, initialInfo.currentLevel, initialInfo.unlockedLevel);
+ui.updateMicAvailability(initialInfo.hasChords);
 
 quiz.start();
