@@ -30,6 +30,14 @@ export class UIController {
     this.levelUpName = document.getElementById('level-up-name');
     this.levelUpDesc = document.getElementById('level-up-desc');
 
+    // Advancement prompt elements
+    this.advanceOverlay = document.getElementById('advance-prompt-overlay');
+    this.advanceLevelEl = document.getElementById('advance-prompt-level');
+    this.advanceTimerBar = document.getElementById('advance-timer-bar');
+    this.advanceYesBtn = document.getElementById('advance-yes');
+    this.advanceNoBtn = document.getElementById('advance-no');
+    this._advanceTimer = null;
+
     this.setupNoteButtons();
     this.setupClefButtons();
     this.setupKeyboard();
@@ -173,13 +181,7 @@ export class UIController {
       const accuracyMet = info.recentCount >= info.minNotes && info.recentAccuracy >= info.minAccuracy;
       this.progressBarEl.style.width = `${progressPct}%`;
       this.progressBarEl.classList.toggle('met', accuracyMet);
-
-      if (info.recentCount < info.minNotes) {
-        this.progressTextEl.textContent = `${info.recentCount}/${info.minNotes} notes — need 85%+ accuracy to advance`;
-      } else {
-        const pct = Math.round(info.recentAccuracy * 100);
-        this.progressTextEl.textContent = `Last ${info.minNotes}: ${pct}% accuracy (need 85%)`;
-      }
+      this.progressTextEl.textContent = `Streak: ${info.recentCount}/${info.minNotes} correct in a row to advance`;
     }
   }
 
@@ -226,6 +228,53 @@ export class UIController {
 
     this.levelUpOverlay.addEventListener('click', dismiss);
     setTimeout(dismiss, 2000);
+  }
+
+  /**
+   * Show advancement prompt with timer bar.
+   * @param {object} info - { level, name, description }
+   * @param {function} onAccept - called if user clicks "Let's go!"
+   * @param {function} onDecline - called if user clicks "Stay here" or timer expires
+   */
+  showAdvancementPrompt(info, onAccept, onDecline) {
+    const TIMEOUT = 8000; // 8 seconds
+
+    this.advanceLevelEl.textContent = `Level ${info.level} \u2014 ${info.name}`;
+
+    // Reset and start timer bar animation
+    this.advanceTimerBar.style.animation = 'none';
+    // Force reflow
+    void this.advanceTimerBar.offsetWidth;
+    this.advanceTimerBar.style.animation = `advanceTimerShrink ${TIMEOUT}ms linear forwards`;
+
+    this.advanceOverlay.classList.remove('hidden');
+
+    const cleanup = () => {
+      clearTimeout(this._advanceTimer);
+      this.advanceOverlay.classList.add('hidden');
+      this.advanceTimerBar.style.animation = 'none';
+      this.advanceYesBtn.replaceWith(this.advanceYesBtn.cloneNode(true));
+      this.advanceNoBtn.replaceWith(this.advanceNoBtn.cloneNode(true));
+      // Re-grab references (cloneNode removes listeners)
+      this.advanceYesBtn = document.getElementById('advance-yes');
+      this.advanceNoBtn = document.getElementById('advance-no');
+    };
+
+    this.advanceYesBtn.addEventListener('click', () => {
+      cleanup();
+      onAccept();
+    }, { once: true });
+
+    this.advanceNoBtn.addEventListener('click', () => {
+      cleanup();
+      onDecline();
+    }, { once: true });
+
+    // Auto-decline on timeout
+    this._advanceTimer = setTimeout(() => {
+      cleanup();
+      onDecline();
+    }, TIMEOUT);
   }
 
   showMidiStatus(status) {

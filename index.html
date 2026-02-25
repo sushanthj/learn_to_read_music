@@ -88,7 +88,7 @@
       <div class="progress-bar-container">
         <div class="progress-bar" id="progress-bar"></div>
       </div>
-      <div class="progress-text" id="progress-text">Answer 10 notes with 85%+ accuracy to advance</div>
+      <div class="progress-text" id="progress-text">Get 10 correct in a row to advance</div>
     </div>
 
     <!-- Level dropdown -->
@@ -135,6 +135,23 @@
       </div>
     </div>
   </main>
+
+  <!-- Advancement prompt overlay -->
+  <div class="advance-prompt-overlay hidden" id="advance-prompt-overlay">
+    <div class="advance-prompt-card">
+      <div class="advance-prompt-emoji">&#127942;</div>
+      <div class="advance-prompt-title">Nice streak!</div>
+      <div class="advance-prompt-text">Ready for the next level?</div>
+      <div class="advance-prompt-level" id="advance-prompt-level">Level 2 — Staff Spaces</div>
+      <div class="advance-prompt-buttons">
+        <button class="advance-btn advance-btn-yes" id="advance-yes">Let's go!</button>
+        <button class="advance-btn advance-btn-no" id="advance-no">Stay here</button>
+      </div>
+      <div class="advance-timer-track">
+        <div class="advance-timer-bar" id="advance-timer-bar"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Level-up celebration overlay -->
   <div class="level-up-overlay hidden" id="level-up-overlay">

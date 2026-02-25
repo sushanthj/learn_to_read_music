@@ -43,6 +43,17 @@ const quiz = new QuizManager({
   onProgressUpdate: (info) => {
     ui.updateLevelDisplay(info);
   },
+  onAdvancementReady: (info) => {
+    ui.showAdvancementPrompt(
+      info,
+      () => {
+        quiz.acceptAdvancement();
+      },
+      () => {
+        quiz.declineAdvancement();
+      },
+    );
+  },
 });
 
 const ui = new UIController({

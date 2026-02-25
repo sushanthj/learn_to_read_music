@@ -222,7 +222,7 @@ export const LEVELS = {
   ],
 };
 
-export const ADVANCEMENT = { minNotes: 10, minAccuracy: 0.85 };
+export const ADVANCEMENT = { minNotes: 10, minAccuracy: 1.0 };
 
 // Set to true to require sequential level completion, false to unlock all levels
 export const LEVELS_LOCKED = false;

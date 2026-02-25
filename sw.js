@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sight-reading-v5';
+const CACHE_NAME = 'sight-reading-v11';
 const ASSETS = [
   './',
   './index.html',
@@ -40,32 +40,16 @@ self.addEventListener('activate', (e) => {
   self.clients.claim();
 });
 
-// Network-first for CDN resources, cache-first for local assets
+// Network-first for ALL resources — always try to fetch fresh content,
+// fall back to cache only when offline.
 self.addEventListener('fetch', (e) => {
-  const url = new URL(e.request.url);
-
-  // Network-first for external resources (VexFlow CDN)
-  if (url.origin !== location.origin) {
-    e.respondWith(
-      fetch(e.request)
-        .then((res) => {
-          const clone = res.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
-          return res;
-        })
-        .catch(() => caches.match(e.request))
-    );
-    return;
-  }
-
-  // Cache-first for local assets
   e.respondWith(
-    caches.match(e.request).then((cached) => {
-      return cached || fetch(e.request).then((res) => {
+    fetch(e.request)
+      .then((res) => {
         const clone = res.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
         return res;
-      });
-    })
+      })
+      .catch(() => caches.match(e.request))
   );
 });

@@ -317,12 +317,15 @@ class PracticeManager {
 
     // Apply per-note colors
     measure.forEach((note, i) => {
-      if (note.type === 'rest') return;
-
       let color = null;
-      if (this.noteHitStatus[i] === true)       color = CORRECT;
-      else if (this.noteHitStatus[i] === false) color = WRONG;
-      else if (i === this.activeNoteIdx && this.isPlaying) color = ACTIVE;
+      if (note.type === 'rest') {
+        // Rests only get the active highlight, never correct/wrong
+        if (i === this.activeNoteIdx && this.isPlaying) color = ACTIVE;
+      } else {
+        if (this.noteHitStatus[i] === true)       color = CORRECT;
+        else if (this.noteHitStatus[i] === false) color = WRONG;
+        else if (i === this.activeNoteIdx && this.isPlaying) color = ACTIVE;
+      }
 
       if (!color) return;
 

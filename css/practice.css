@@ -108,6 +108,10 @@
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
 }
 
 .subdiv-btn:hover {
