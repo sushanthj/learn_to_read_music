@@ -276,6 +276,7 @@ header p {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
   padding: 12px 20px;
   background: var(--surface);
@@ -299,6 +300,79 @@ header p {
 .stat-value {
   font-size: 1.2rem;
   font-weight: 700;
+}
+
+/* Share button inside stats */
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.share-btn:hover {
+  background: rgba(255,255,255,0.16);
+  color: var(--text-primary);
+}
+
+/* QR Popup Overlay */
+.qr-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.qr-overlay.hidden { display: none; }
+
+.qr-popup {
+  position: relative;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 32px 36px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+.qr-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+}
+.qr-close:hover { color: var(--text-primary); }
+
+.qr-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+}
+
+#qr-code {
+  border-radius: 8px;
+  background: #fff;
+  padding: 10px;
 }
 
 /* MIDI + MIC */
@@ -809,5 +883,9 @@ header p {
 
   .stat-value {
     font-size: 1rem;
+  }
+
+  .share-btn {
+    display: none;
   }
 }

@@ -10,7 +10,7 @@ const staffContainer = document.getElementById('staff');
 
 let currentClef    = CLEF_MODES.TREBLE;
 let inputMode      = 'click';
-let instrumentMode = 'piano';
+let instrumentMode = 'guitar';
 let lastNote       = null;
 let midiHandler    = null;
 let micHandler     = null;
@@ -119,6 +119,12 @@ if (!MIDIHandler.isSupported()) {
 if (!MicHandler.isSupported()) {
   ui.hideMicOption();
 }
+
+// QR popup handlers
+const qrOverlay = document.getElementById('qr-overlay');
+document.getElementById('share-btn').addEventListener('click', () => qrOverlay.classList.remove('hidden'));
+document.getElementById('qr-close').addEventListener('click', () => qrOverlay.classList.add('hidden'));
+qrOverlay.addEventListener('click', (e) => { if (e.target === qrOverlay) qrOverlay.classList.add('hidden'); });
 
 // Initialize level dropdown and start the quiz
 const initialInfo = quiz.getProgressInfo();

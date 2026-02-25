@@ -37,8 +37,8 @@
 
     <!-- Instrument mode -->
     <div class="controls">
-      <button class="instrument-btn active" data-mode="piano">🎹 Piano</button>
-      <button class="instrument-btn" data-mode="guitar">🎸 Guitar</button>
+      <button class="instrument-btn" data-mode="piano">🎹 Piano</button>
+      <button class="instrument-btn active" data-mode="guitar">🎸 Guitar</button>
     </div>
 
     <!-- MIDI section -->
@@ -132,6 +132,19 @@
       <div class="stat">
         <div class="stat-label">Best Streak</div>
         <div class="stat-value" id="best-streak">0</div>
+      </div>
+      <button class="share-btn" id="share-btn" title="Share page">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share page
+      </button>
+    </div>
+
+    <!-- QR Code Popup -->
+    <div class="qr-overlay hidden" id="qr-overlay">
+      <div class="qr-popup">
+        <button class="qr-close" id="qr-close">&times;</button>
+        <p class="qr-label">Scan to open on another device</p>
+        <img src="icons/qr_code.svg" alt="QR code to open this page" id="qr-code" width="160" height="160">
       </div>
     </div>
   </main>

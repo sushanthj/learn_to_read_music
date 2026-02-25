@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sight-reading-v12';
+const CACHE_NAME = 'sight-reading-v14';
 const ASSETS = [
   './',
   './index.html',
@@ -20,6 +20,7 @@ const ASSETS = [
   './js/progressManager.js',
   './icons/icon-192.png',
   './icons/icon-512.png',
+  './icons/qr_code.svg',
 ];
 
 // Cache local assets on install, fetch VexFlow from network
