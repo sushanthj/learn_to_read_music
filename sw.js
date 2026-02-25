@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sight-reading-v11';
+const CACHE_NAME = 'sight-reading-v12';
 const ASSETS = [
   './',
   './index.html',

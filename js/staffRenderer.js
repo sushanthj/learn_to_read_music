@@ -22,8 +22,16 @@ export function renderNote(container, noteObj, clefMode) {
 
   const svg = container.querySelector('svg');
   if (svg) {
+    const w = parseFloat(svg.getAttribute('width'));
+    const h = parseFloat(svg.getAttribute('height'));
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svg.removeAttribute('width');
+    svg.removeAttribute('height');
     svg.style.display = 'block';
     svg.style.margin = '0 auto';
+    svg.style.width = '100%';
+    svg.style.maxWidth = `${w * 1.8}px`;
+    svg.style.height = 'auto';
   }
 }
 
