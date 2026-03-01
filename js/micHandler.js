@@ -76,7 +76,7 @@ export class MicHandler {
    *
    * Stage 2 — Frequency-scaled threshold (after NSDF)
    *   Lower strings are naturally louder, so the effective threshold is scaled:
-   *     < 200 Hz → ×1.4,  200–500 Hz → ×1.0,  > 500 Hz → ×0.7
+   *     < 200 Hz → ×1.4,  200–330 Hz → ×1.0,  330–550 Hz → ×0.55,  > 550 Hz → ×0.4
    *   Signal above the floor but below the scaled threshold (string decaying)
    *   does NOT reset state, preventing re-fire on the decay tail.
    *
@@ -106,7 +106,11 @@ export class MicHandler {
     }
 
     // Stage 2: frequency-scaled threshold (louder low strings get higher bar)
-    const scale = freq < 200 ? 1.4 : freq < 500 ? 1.0 : 0.7;
+    //   < 200 Hz (E2/A2 strings)      → ×1.4
+    //   200–330 Hz (D/G/B strings)     → ×1.0
+    //   330–550 Hz (high-E open–mid)   → ×0.55
+    //   > 550 Hz  (high-E upper frets) → ×0.4
+    const scale = freq < 200 ? 1.4 : freq < 330 ? 1.0 : freq < 550 ? 0.55 : 0.4;
     if (this._smoothRms < this.minRms * scale) return;  // decaying — don't reset state
 
     const midi = Math.round(12 * Math.log2(freq / 440) + 69) + this.transpose;
